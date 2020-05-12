@@ -30,8 +30,27 @@ npm install material-design-icons
 ```
 
 
+```
+ng generate component heroes
 
+ng generate service hero
 
+ng generate module CustomerDashboard
+
+ng generate module app-routing --flat --module=app
+
+ng generate module my-module --routing
+
+```
+
+```
+npm i
+
+npm start
+
+npm run build:prod
+
+```
 
 # MyNx
 
