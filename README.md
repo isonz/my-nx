@@ -1,3 +1,38 @@
+```
+npx create-nx-workspace@latest
+
+npx: 198 安装成功，用时 33.521 秒
+? Workspace name (e.g., org name)     my-nx
+? What to create in the new workspace angular-nest      [a workspace with a full stack application (Angular + Nest)]
+? Application name                    mynx
+? Default stylesheet format           SASS(.scss)  [ http://sass-lang.com   ]
+Creating a sandbox with Nx...
+
+
+npm install -g @nrwl/cli
+
+```
+
+```
+nx serve mynx
+nx serve api
+
+npm run nx -- serve mynx
+npm run nx -- serve api
+
+```
+
+```
+npm install --save @angular/material @angular/cdk @angular/animations
+npm install --save hammerjs
+npm install material-design-icons
+
+```
+
+
+
+
+
 # MyNx
 
 This project was generated using [Nx](https://nx.dev).
