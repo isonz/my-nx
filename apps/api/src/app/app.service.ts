@@ -1,9 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { Message } from '@my-nx/api-interfaces';
+import { LoginAccount } from '@my-nx/api-interfaces';
 
 @Injectable()
 export class AppService {
-  getData(): Message {
-    return { message: 'Welcome to api!' };
+  getData(): LoginAccount {
+    return {
+      id: 1,
+      username: 'ison',
+      password: '',
+      token: 'asdfasdfasdfasdfewefef'
+    };
   }
 }

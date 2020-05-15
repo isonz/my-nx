@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 
-import { Message } from '@my-nx/api-interfaces';
+import { LoginAccount } from '@my-nx/api-interfaces';
 
 import { AppService } from './app.service';
 
@@ -8,8 +8,14 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('hello')
-  getData(): Message {
+  @Get('/auth/login')
+  getData(): LoginAccount {
     return this.appService.getData();
   }
+
+  @Post('/auth/login')
+  getPostData(): LoginAccount {
+    return this.appService.getData();
+  }
+
 }

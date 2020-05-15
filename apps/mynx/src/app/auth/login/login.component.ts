@@ -1,42 +1,43 @@
-import { Component }        from '@angular/core';
-import { Router,
-         NavigationExtras } from '@angular/router';
-import { AuthService }      from '../auth.service';
+import { AfterViewInit, Component, ElementRef } from '@angular/core';
+import { Router, NavigationExtras } from '@angular/router';
+import { Account, AuthService } from '../auth.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'my-nx-auth-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
-  message: string;
+export class LoginComponent implements AfterViewInit{
+  hide = true;
+  isLoading = false;
+  account = new Account();
 
-  constructor(public authService: AuthService, public router: Router) {
-    this.setMessage();
+  constructor(
+    public authService: AuthService,
+    public router: Router,
+    private eleRef :ElementRef
+  ) {
   }
 
-  setMessage() {
-    this.message = 'Logged ' + (this.authService.isLoggedIn ? 'in' : 'out');
+  onSubmit() {
+    //console.log(this.account);
+    this.isLoading = true;
+    this.login();
   }
+
 
   login() {
-    this.message = 'Trying to log in ...';
-
-    this.authService.login().subscribe(() => {
-      this.setMessage();
+    this.authService.login(this.account).subscribe(() => {
+      this.isLoading = false;
       if (this.authService.isLoggedIn) {
-        // Get the redirect URL from our auth service
-        // If no redirect has been set, use the default
-        let redirect = this.authService.redirectUrl ? this.router.parseUrl(this.authService.redirectUrl) : '/admin';
+        const redirect = this.authService.redirectUrl ? this.router.parseUrl(this.authService.redirectUrl) : '/dashboard';
 
         // Set our navigation extras object
         // that passes on our global query params and fragment
-        let navigationExtras: NavigationExtras = {
+        const navigationExtras: NavigationExtras = {
           queryParamsHandling: 'preserve',
           preserveFragment: true
         };
-
-        // Redirect the user
         this.router.navigateByUrl(redirect, navigationExtras);
       }
     });
@@ -44,6 +45,11 @@ export class LoginComponent {
 
   logout() {
     this.authService.logout();
-    this.setMessage();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.eleRef.nativeElement.querySelector('#username').focus();
+    }, 500);
   }
 }

@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { AppComponent } from './app.component';
+import { AppComponent } from './public/app.component';
 import { AuthGuard } from './auth/auth.guard';
+import { PageNotFoundComponent } from './public/page-not-found/page-not-found.component';
 
 
 const routes: Routes = [
-  { path: '',  component: AppComponent, canActivate: [AuthGuard] },
-  { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
-  { path: 'util', loadChildren: () => import('./util/util.module').then(m => m.UtilModule) }, //懒加载，在根模块中未注册
-  { path: '**', redirectTo: 'util/page-not-found', pathMatch: 'full'  }
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
+  { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },   //懒加载，在根模块中未注册
+  { path: 'users', loadChildren: () => import('./users/users.module').then(m => m.UsersModule), canLoad: [AuthGuard]},
+  { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule), canLoad: [AuthGuard] },
+  { path: '**', component: PageNotFoundComponent  }
 ];
 
 @NgModule({
@@ -16,7 +18,7 @@ const routes: Routes = [
     RouterModule.forRoot(
       routes,
       {
-        enableTracing: true, // <-- debugging purposes only
+        enableTracing: false, // <-- debugging purposes only
         preloadingStrategy: PreloadAllModules,
       }
     )

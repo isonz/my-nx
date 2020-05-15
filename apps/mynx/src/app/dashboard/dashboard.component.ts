@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Message } from '@my-nx/api-interfaces';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -8,9 +7,6 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-
-  hello$ = this.http.get<Message>('/api/hello');
-  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
   }

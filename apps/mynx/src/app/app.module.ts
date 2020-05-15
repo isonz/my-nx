@@ -1,11 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppComponent } from './app.component';
+import { AppComponent } from './public/app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import { AuthModule } from './auth/auth.module';
+import { AngularMaterialModule } from './angular-material.module';
 
 
 @NgModule({
@@ -13,10 +13,9 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     BrowserModule,
     HttpClientModule,
-    BrowserAnimationsModule,
     AppRoutingModule,
-
-    AuthModule
+    BrowserAnimationsModule,
+    AngularMaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
