@@ -31,9 +31,6 @@ export class LoginComponent implements AfterViewInit{
       this.isLoading = false;
       if (this.authService.isLoggedIn) {
         const redirect = this.authService.redirectUrl ? this.router.parseUrl(this.authService.redirectUrl) : '/dashboard';
-
-        // Set our navigation extras object
-        // that passes on our global query params and fragment
         const navigationExtras: NavigationExtras = {
           queryParamsHandling: 'preserve',
           preserveFragment: true

@@ -52,6 +52,69 @@ npm run build:prod
 
 ```
 
+# Nest
+```
+
+npm i -g @nestjs/cli
+nest new my-nest
+
+npm run start:debug
+
+
+nest g module cats
+nest g controller cats
+nest g service cats 
+
+
+http://localhost:3000/
+
+
+npm i --save-dev @nestjs/testing
+
+
+npm install --save @nestjs/passport passport
+
+
+npm install --save-dev @types/passport-local
+
+npm install @nestjs/jwt passport-jwt
+npm install @types/passport-jwt --save-dev
+
+npm install --save @nestjs/typeorm typeorm mysql
+
+
+npm install --save js-sha256
+
+```
+
+```
+npm i typeorm-model-generator@no-engines
+# npm i -g typeorm-model-generator
+"db": "npx typeorm-model-generator -h localhost -d my_nx -p 3306 -u root -x admin888 -e mysql -o libs/entities --noConfig true --ce pascal --cp camel",
+
+
+"scripts": {
+  "db": "rm -rf entities & npx typeorm-model-generator -h localhost -d testdabase -p 3306 -u root -x root -e mysql -o entities --noConfig true --ce pascal --cp camel"
+}
+
+rm -rf entities表示先删除文件夹entities
+npx typeorm-model-generator如果全局安装了就不需要加npx没有全局安装就加上去
+-h localhost -d 数据库名字 -p 端口 -u 用户名 -x 密码 -e 数据库类型
+-o entities表示输出到指定的文件夹
+--noConfig true表示不生成ormconfig.json和tsconfig.json文件
+--ce pascal表示将类名转换首字母是大写的驼峰命名
+--cp camel表示将数据库中的字段比如create_at转换为createAt
+-a 表示会继承一个BaseEntity的类,根据自己需求加
+
+
+npm run db
+
+
+```
+https://www.npmjs.com/package/typeorm-model-generator
+https://blog.csdn.net/kuangshp128/article/details/98062662
+
+
 # MyNx
 
 This project was generated using [Nx](https://nx.dev).

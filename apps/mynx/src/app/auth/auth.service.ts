@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, range } from 'rxjs';
-import { tap} from 'rxjs/operators';
+import { retry, tap } from 'rxjs/operators';
 import { LoginAccount } from '@my-nx/api-interfaces';
 import { HttpService } from '../share/services/http.service';
 
@@ -20,7 +20,8 @@ export class AuthService {
 
 
   login(account: Account): Observable<Account> {
-    return this.http.post<Account>('/api/auth/login1', account).pipe(
+    return this.http.post<Account>('/api/auth/login', account).pipe(
+      // retry(3),
       tap(val => this.isLoggedIn = true)
     );
   }

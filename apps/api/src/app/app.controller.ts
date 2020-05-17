@@ -1,21 +1,15 @@
-import { Controller, Get, Post } from '@nestjs/common';
-
-import { LoginAccount } from '@my-nx/api-interfaces';
-
+import { Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('/auth/login')
-  getData(): LoginAccount {
-    return this.appService.getData();
-  }
-
-  @Post('/auth/login')
-  getPostData(): LoginAccount {
-    return this.appService.getData();
+  @Get('')
+  index(){
+    return 'This is index.';
   }
 
 }
