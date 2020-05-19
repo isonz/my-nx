@@ -21,10 +21,7 @@
             "polyfills": "apps/mynx/src/polyfills.ts",
             "tsConfig": "apps/mynx/tsconfig.app.json",
             "aot": true,
-            "assets": [
-              "apps/mynx/src/favicon.ico",
-              "apps/mynx/src/assets"
-            ],
+            "assets": ["apps/mynx/src/favicon.ico", "apps/mynx/src/assets"],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/purple-green.css",
               "apps/mynx/src/styles.scss"
@@ -87,10 +84,7 @@
               "apps/mynx/tsconfig.app.json",
               "apps/mynx/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/mynx/**"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/mynx/**"]
           }
         },
         "test": {
@@ -125,13 +119,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "apps/mynx-e2e/tsconfig.e2e.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/mynx-e2e/**"
-            ]
+            "tsConfig": ["apps/mynx-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/mynx-e2e/**"]
           }
         }
       }
@@ -149,9 +138,7 @@
             "outputPath": "dist/apps/api",
             "main": "apps/api/src/main.ts",
             "tsConfig": "apps/api/tsconfig.app.json",
-            "assets": [
-              "apps/api/src/assets"
-            ]
+            "assets": ["apps/api/src/assets"]
           },
           "configurations": {
             "production": {
@@ -180,10 +167,7 @@
               "apps/api/tsconfig.app.json",
               "apps/api/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/api/**"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/api/**"]
           }
         },
         "test": {
@@ -209,10 +193,7 @@
               "libs/api-interfaces/tsconfig.lib.json",
               "libs/api-interfaces/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/api-interfaces/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/api-interfaces/**"]
           }
         },
         "test": {

@@ -10,7 +10,7 @@
     "test": "ng test",
     "lint": "nx workspace-lint && ng lint",
     "e2e": "ng e2e",
-    "db": "npx typeorm-model-generator -h localhost -d my_nx -p 3306 -u root -x admin888 -e mysql -o libs/entities --noConfig true",
+    "db": "npx typeorm-model-generator -h localhost -d my_nx -p 3306 -u root -x admin888 -e mysql -o apps/api/src/data/entities --noConfig true",
     "affected:apps": "nx affected:apps",
     "affected:libs": "nx affected:libs",
     "affected:build": "nx affected:build",

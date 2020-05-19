@@ -1,36 +1,61 @@
 import { Injectable } from '@nestjs/common';
-import { LoginAccount } from '@my-nx/api-interfaces';
-import { UsersService } from '../../users/services/users.service';
+import { AdminsService } from '../../admins/services/admins.service';
+import { sha256 } from 'js-sha256';
+import * as jwt from 'jsonwebtoken';
+import { AdminsLoginDto } from '@my-nx/api-interfaces';
+import { Admins } from '../../../data/entities/Admins';
+import { environment } from '../../../environments/environment';
+import { ApiException } from '../../../common/exception/http.exception';
+import { ApiErrorCode } from '../../../common/enums/api-error-code.enum';
+
+
 
 @Injectable()
 export class AuthService {
+
+  admin: Admins;
+  adminsLoginDto: AdminsLoginDto;
+  expires = 1800;
+
   constructor(
-    private readonly usersService: UsersService
+    private readonly adminsService: AdminsService,
   ) {}
 
-  private loginAccount:LoginAccount;
-
-  async login(loginAccount: LoginAccount): Promise<any> {
-    this.loginAccount = loginAccount;
-    // this.user = await this.userRepository.findOne({ account: account }, { relations: ['roles'] });
-    // if (this.user != undefined && this.user.password == password) {
-    //   let permissions = await this.getPermissions(this.user);
-    //   return new Promise((x, y) => {
-    //     this.createToken(this.user.id)
-    //       .then(z => x({ name: this.user.name, token: z, permissions: permissions }))
-    //       .catch(z => y(z))
-    //   })
-    // } else {
-    //   throw new ApiException('用户账号或密码无效！', ApiErrorCode.USER_ACCOUNT_PASSWORD_INVALID, HttpStatus.BAD_REQUEST);
-    // }
+  async createToken(admin: Admins): Promise<any> {
+    this.adminsLoginDto = {
+      id: admin.id,
+      account: admin.account,
+      token: admin.slat,
+      permissions: 'admin',
+      nickname: admin.nickname,
+      avatar: admin.avatar
+    };
+    return jwt.sign(this.adminsLoginDto, environment.jwtSecret, { expiresIn: this.expires });
   }
 
-  // async login() : LoginAccount {
-  //   const payload = { username: user.username, sub: user.userId };
-  //   return {
-  //     access_token: this.jwtService.sign(payload),
-  //   };
-  // }
+  async login(account: string, password: string): Promise<any> {
+    this.admin = await this.adminsService.findByAccount(account);
+    // console.log(this.admin);
+    if (this.admin !== undefined) {
+      const pwd = this.admin.password;
+      const salt = this.admin.slat;
+      password = sha256(password + salt);
+      if (pwd === password) {
+        return new Promise((x, y) => {
+          this.createToken(this.admin)
+            .then( data => {
+              this.adminsLoginDto.token = data;
+              x(this.adminsLoginDto);
+            }, err => {
+                console.log(err);
+            })
+            .catch(z => y(z))
+        })
+      } else {
+        throw new ApiException('用户账号或密码无效！', ApiErrorCode.USER_ACCOUNT_PASSWORD_INVALID );
+      }
+    }
+  }
 
 
 }

@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'my-nx-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  templateUrl: './admins.component.html',
+  styleUrls: ['./admins.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class AdminsComponent implements OnInit {
 
   constructor() { }
 

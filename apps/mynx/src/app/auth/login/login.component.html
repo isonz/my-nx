@@ -9,7 +9,7 @@
 
         <mat-form-field class="full-width">
           <mat-icon matPrefix>person</mat-icon>
-          <input id="username" matInput placeholder="账号" required name="username" [(ngModel)]="account.username" #username="ngModel">
+          <input id="account" matInput autocomplete="false" placeholder="账号" required name="account" [(ngModel)]="account" #username="ngModel">
           <div [hidden]="username.valid || username.pristine" class="alert alert-danger">
             请填写用户名
           </div>
@@ -17,7 +17,7 @@
 
         <mat-form-field class="full-width">
           <mat-icon matPrefix>lock</mat-icon>
-          <input id="password" matInput placeholder="密码" [type]="hide ? 'password' : 'text'" required name="password" [(ngModel)]="account.password" #passwd="ngModel">
+          <input id="password" matInput placeholder="密码" [type]="hide ? 'password' : 'text'" required name="password" [(ngModel)]="password" #passwd="ngModel">
           <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
           <div [hidden]="passwd.valid || passwd.pristine" class="alert alert-danger">
             请填写大于6个字符的密码
@@ -39,13 +39,4 @@
     </form>
   </mat-card>
 </div>
-
-
-<!--  <h2>LOGIN</h2>-->
-<!--  <p>{{message}}</p>-->
-<!--  <p>-->
-<!--    <button (click)="login()"  *ngIf="!authService.isLoggedIn">Login</button>-->
-<!--    <button (click)="logout()" *ngIf="authService.isLoggedIn">Logout</button>-->
-<!--  </p>-->
-<!--  <a routerLink="/">Index</a>-->
 

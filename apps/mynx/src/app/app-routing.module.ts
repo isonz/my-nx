@@ -8,7 +8,7 @@ import { PageNotFoundComponent } from './public/page-not-found/page-not-found.co
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
   { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },   //懒加载，在根模块中未注册
-  { path: 'users', loadChildren: () => import('./users/users.module').then(m => m.UsersModule), canLoad: [AuthGuard]},
+  { path: 'admins', loadChildren: () => import('./admins/admins.module').then(m => m.AdminsModule), canLoad: [AuthGuard]},
   { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule), canLoad: [AuthGuard] },
   { path: '**', component: PageNotFoundComponent  }
 ];

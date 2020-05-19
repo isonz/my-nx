@@ -1,11 +1,11 @@
-export interface Users {
+export interface UsersDto {
   id: number;
   username: string;
   password: string;
   token: string;
 }
 
-export interface LoginAccount {
+export interface UsersLoginDto {
   id: number;
   username: string;
   password: string;

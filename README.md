@@ -27,6 +27,7 @@ npm install --save @angular/material @angular/cdk @angular/animations
 npm install --save hammerjs
 npm install material-design-icons
 
+
 ```
 
 
@@ -75,6 +76,7 @@ npm i --save-dev @nestjs/testing
 npm install --save @nestjs/passport passport
 
 
+
 npm install --save-dev @types/passport-local
 
 npm install @nestjs/jwt passport-jwt
@@ -111,6 +113,13 @@ npm run db
 
 
 ```
+
+```
+nx g @nrwl/workspace:lib entities
+nx g @nrwl/workspace:lib repositories
+```
+
+
 https://www.npmjs.com/package/typeorm-model-generator
 https://blog.csdn.net/kuangshp128/article/details/98062662
 

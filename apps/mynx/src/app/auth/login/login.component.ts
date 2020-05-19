@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
-import { Account, AuthService } from '../auth.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'my-nx-auth-login',
@@ -10,7 +10,8 @@ import { Account, AuthService } from '../auth.service';
 export class LoginComponent implements AfterViewInit{
   hide = true;
   isLoading = false;
-  account = new Account();
+  account = '';
+  password = ''
 
   constructor(
     public authService: AuthService,
@@ -27,16 +28,19 @@ export class LoginComponent implements AfterViewInit{
 
 
   login() {
-    this.authService.login(this.account).subscribe(() => {
-      this.isLoading = false;
+    this.authService.login(this.account, this.password).subscribe(() => {
       if (this.authService.isLoggedIn) {
-        const redirect = this.authService.redirectUrl ? this.router.parseUrl(this.authService.redirectUrl) : '/dashboard';
-        const navigationExtras: NavigationExtras = {
-          queryParamsHandling: 'preserve',
-          preserveFragment: true
-        };
-        this.router.navigateByUrl(redirect, navigationExtras);
+          const redirect = this.authService.redirectUrl ? this.router.parseUrl(this.authService.redirectUrl) : '/dashboard';
+          const navigationExtras: NavigationExtras = {
+            queryParamsHandling: 'preserve',
+            preserveFragment: true
+          };
+          this.router.navigateByUrl(redirect, navigationExtras);
+      }else{
+        this.eleRef.nativeElement.querySelector('#password').value = '';
+        this.eleRef.nativeElement.querySelector('#password').focus();
       }
+      this.isLoading = false;
     });
   }
 
@@ -46,7 +50,7 @@ export class LoginComponent implements AfterViewInit{
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.eleRef.nativeElement.querySelector('#username').focus();
+      this.eleRef.nativeElement.querySelector('#account').focus();
     }, 500);
   }
 }

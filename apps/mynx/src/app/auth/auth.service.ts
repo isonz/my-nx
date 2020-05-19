@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 
 import { Observable, range } from 'rxjs';
 import { retry, tap } from 'rxjs/operators';
-import { LoginAccount } from '@my-nx/api-interfaces';
+import { AdminsLoginDto } from '@my-nx/api-interfaces';
 import { HttpService } from '../share/services/http.service';
+import { ToastService } from '../share/services/toast.service';
 
 
 @Injectable({
@@ -13,16 +14,31 @@ export class AuthService {
 
   constructor(
     private http: HttpService,
+    public toastService: ToastService
   ) {}
 
   isLoggedIn = false;
   redirectUrl: string;
 
 
-  login(account: Account): Observable<Account> {
-    return this.http.post<Account>('/api/auth/login', account).pipe(
+  login(account: string, password: string): Observable<Account> {
+    return this.http.post<Account>('/api/auth/login', {account, password}).pipe(
       // retry(3),
-      tap(val => this.isLoggedIn = true)
+      tap(
+        val => {
+            if(!val){
+              this.toastService.open('用户名或密码不正确！');
+              return false;
+            }else {
+
+              this.isLoggedIn = true;
+            }
+          },
+        err => {
+          this.toastService.open('网络出现错误，请稍后。。。');
+          console.error(err);
+        }
+      )
     );
   }
 
@@ -53,9 +69,11 @@ export class AuthService {
 
 }
 
-export class Account implements LoginAccount{
+export class Account implements AdminsLoginDto{
   id: number;
-  password: string;
+  account: string;
   token: string;
-  username: string;
+  permissions: string;
+  nickname: string;
+  avatar: string;
 }
