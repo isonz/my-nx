@@ -115,7 +115,7 @@ export class HttpService {
   handleError(error: HttpErrorResponse) {
     // console.log(error.error);
     if (error.error) {
-      this.toastService.open(`出现了网络问题 ${error.error.message}`, `${error.error.statusCode}`);
+      this.toastService.open(`${error.error.message}`, `${error.error.statusCode}`);
     }
     return throwError(error.error);
   }

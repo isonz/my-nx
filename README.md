@@ -33,6 +33,7 @@ npm install material-design-icons
 
 ```
 ng generate component heroes
+ng g c no-auth --module=app
 
 ng generate service hero
 

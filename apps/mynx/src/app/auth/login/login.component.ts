@@ -28,24 +28,28 @@ export class LoginComponent implements AfterViewInit{
 
 
   login() {
-    this.authService.login(this.account, this.password).subscribe(() => {
-      if (this.authService.isLoggedIn) {
-          const redirect = this.authService.redirectUrl ? this.router.parseUrl(this.authService.redirectUrl) : '/dashboard';
-          const navigationExtras: NavigationExtras = {
-            queryParamsHandling: 'preserve',
-            preserveFragment: true
-          };
-          this.router.navigateByUrl(redirect, navigationExtras);
-      }else{
-        this.eleRef.nativeElement.querySelector('#password').value = '';
-        this.eleRef.nativeElement.querySelector('#password').focus();
+    this.authService.login(this.account, this.password).subscribe(
+      () => {
+        if (this.authService.isLoggedIn) {
+            const redirect = this.authService.redirectUrl ? this.router.parseUrl(this.authService.redirectUrl) : '/main';
+            const navigationExtras: NavigationExtras = {
+              queryParamsHandling: 'preserve',
+              preserveFragment: true
+            };
+            this.router.navigateByUrl(redirect, navigationExtras);
+        }else{
+          this.eleRef.nativeElement.querySelector('#password').value = '';
+          this.eleRef.nativeElement.querySelector('#password').focus();
+        }
+      },
+      err => {
+        this.isLoading = false;
+        console.error(err);
+      },
+      () =>{
+        this.isLoading = false;
       }
-      this.isLoading = false;
-    });
-  }
-
-  logout() {
-    this.authService.logout();
+    );
   }
 
   ngAfterViewInit(): void {

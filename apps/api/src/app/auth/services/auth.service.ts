@@ -47,13 +47,15 @@ export class AuthService {
               this.adminsLoginDto.token = data;
               x(this.adminsLoginDto);
             }, err => {
-                console.log(err);
+                throw new ApiException('未知错误'+err.toString(), 1000000 );
             })
             .catch(z => y(z))
         })
       } else {
-        throw new ApiException('用户账号或密码无效！', ApiErrorCode.USER_ACCOUNT_PASSWORD_INVALID );
+        throw new ApiException('密码错误', ApiErrorCode.USER_ACCOUNT_PASSWORD_INVALID );
       }
+    } else {
+      throw new ApiException('账号不存在', ApiErrorCode.USER_ACCOUNT_PASSWORD_INVALID );
     }
   }
 

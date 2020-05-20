@@ -16,9 +16,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const url: string = state.url;
-
-    return this.checkLogin(url);
+    return this.checkLogin(state.url);
   }
 
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
@@ -33,19 +31,22 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 
   checkLogin(url: string): boolean {
     // console.log(url);
-    if (this.authService.isLoggedIn) { return true; }
+    if (this.authService.isLoggedIn || this.authService.account.token) {
+      return true;
+    }
 
     this.authService.redirectUrl = url;
-
     // Set our navigation extras object
     // that contains our global query params and fragment
     const navigationExtras: NavigationExtras = {
       // queryParams: { 'session_id': 'sessionId' },
       //fragment: 'anchor'
     };
-
     // Navigate to the login page with extras
     this.router.navigate(['/auth/login'], navigationExtras);
     return false;
   }
+
+
+
 }
