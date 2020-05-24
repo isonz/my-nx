@@ -18,6 +18,7 @@ export class LoginComponent implements AfterViewInit{
     public router: Router,
     private eleRef :ElementRef
   ) {
+
   }
 
   onSubmit() {
