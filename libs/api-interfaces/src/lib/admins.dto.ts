@@ -1,7 +1,6 @@
 export interface AdminsDto {
   id: number;
   account: string;
-  token: string;
   permissions: string;
   nickname: string;
   avatar: string;

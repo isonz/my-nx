@@ -126,5 +126,5 @@ export class Account implements AdminsLoginDto{
   permissions: string;
   nickname: string;
   avatar: string;
-  remember_me = true;
+  remember_me = false;
 }

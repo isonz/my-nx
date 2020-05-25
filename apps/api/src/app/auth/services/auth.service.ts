@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { AdminsService } from '../../admins/services/admins.service';
 import { sha256 } from 'js-sha256';
 import * as jwt from 'jsonwebtoken';
-import { AdminsLoginDto } from '@my-nx/api-interfaces';
+import { AdminsDto, AdminsLoginDto } from '@my-nx/api-interfaces';
 import { Admins } from '../../../data/entities/Admins';
 import { environment } from '../../../environments/environment';
 import { ApiException } from '../../../common/exception/http.exception';
 import { ApiErrorCode } from '../../../common/enums/api-error-code.enum';
+import { JwtPayload } from '../jwt-payload.interface';
 
 
 
@@ -14,23 +15,15 @@ import { ApiErrorCode } from '../../../common/enums/api-error-code.enum';
 export class AuthService {
 
   admin: Admins;
-  adminsLoginDto: AdminsLoginDto;
   expires = 1800;
 
   constructor(
     private readonly adminsService: AdminsService,
   ) {}
 
-  async createToken(admin: Admins): Promise<any> {
-    this.adminsLoginDto = {
-      id: admin.id,
-      account: admin.account,
-      token: admin.slat,
-      permissions: 'admin',
-      nickname: admin.nickname,
-      avatar: admin.avatar
-    };
-    return jwt.sign(this.adminsLoginDto, environment.jwtSecret, { expiresIn: this.expires });
+  async createToken(id: number): Promise<any> {
+    const user: JwtPayload = { id: id }
+    return jwt.sign(user, environment.jwtSecret, { expiresIn: this.expires });
   }
 
   async login(account: string, password: string): Promise<any> {
@@ -42,11 +35,8 @@ export class AuthService {
       password = sha256(password + salt);
       if (pwd === password) {
         return new Promise((x, y) => {
-          this.createToken(this.admin)
-            .then( data => {
-              this.adminsLoginDto.token = data;
-              x(this.adminsLoginDto);
-            }, err => {
+          this.createToken(this.admin.id)
+            .then(z => x({ account: this.admin.account, token: z, permissions: 'Admin' }), err => {
                 throw new ApiException('未知错误'+err.toString(), 1000000 );
             })
             .catch(z => y(z))
@@ -59,5 +49,8 @@ export class AuthService {
     }
   }
 
+  async validateAccount(payload: AdminsDto): Promise<any> {
+    return this.adminsService.findOne(payload.id);
+  }
 
 }

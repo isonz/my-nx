@@ -132,7 +132,7 @@ export class HttpService {
     if (auth && auth['token']) {
       option["headers"] = {
         'Content-Type':  'application/json',
-        'Authorization': `${auth['token']}`
+        'Authorization': `Bearer ${auth['token']}`
       };
     }
   }

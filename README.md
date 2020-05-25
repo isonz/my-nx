@@ -74,14 +74,7 @@ http://localhost:3000/
 npm i --save-dev @nestjs/testing
 
 
-npm install --save @nestjs/passport passport
-
-
-
-npm install --save-dev @types/passport-local
-
-npm install @nestjs/jwt passport-jwt
-npm install @types/passport-jwt --save-dev
+npm install --save @nestjs/passport passport passport-jwt passport-http-bearer
 
 npm install --save @nestjs/typeorm typeorm mysql
 
