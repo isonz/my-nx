@@ -25,10 +25,6 @@ export class AdminsService {
         val => {
             this.adminList = val;
             return this.adminList;
-        },
-        err => {
-          this.toastService.open('网络出现错误，请稍后。。。');
-          console.error(err);
         }
       )
     );

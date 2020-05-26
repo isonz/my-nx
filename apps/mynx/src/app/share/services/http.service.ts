@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Observer, throwError } from 'rxjs';
 import { SettingService } from './setting.service';
 import { ToastService } from './toast.service';
+import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
 
 
 /**
@@ -17,9 +19,12 @@ export class HttpService {
   constructor(
     public http: HttpClient,
     public setting: SettingService,
-    public toastService: ToastService
+    public toastService: ToastService,
+    private router: Router
   ) {
   }
+
+  private session_key = environment.session_key;
 
   /**
    * get请求
@@ -114,10 +119,19 @@ export class HttpService {
    */
   handleError(error: HttpErrorResponse) {
     // console.log(error.error);
-    if (error.error) {
+    if(401 === error.error.statusCode){
+      this.logout();
+    }else if (error.error) {
       this.toastService.open(`${error.error.message}`, `${error.error.statusCode}`);
+      return throwError(error.error);
     }
-    return throwError(error.error);
+
+  }
+
+  logout(){
+    this.setting.removeLocal(this.session_key);
+    this.setting.removeSession(this.session_key);
+    location.reload();
   }
 
   /**

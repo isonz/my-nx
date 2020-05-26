@@ -6,6 +6,7 @@ import { AdminsLoginDto } from '@my-nx/api-interfaces';
 import { HttpService } from '../share/services/http.service';
 import { ToastService } from '../share/services/toast.service';
 import { SettingService } from '../share/services/setting.service';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
@@ -27,12 +28,10 @@ export class AuthService {
   private _account: Account = null;
   public isLoggedIn = false;
   public redirectUrl: string;
+  public remember_me = false;
 
-  private _key = 'Auth';
+  private key = environment.session_key;
 
-  get key(): string {
-    return this._key;
-  }
 
   /**
    * 登录
@@ -48,11 +47,7 @@ export class AuthService {
               this.isLoggedIn = true;
             }
             return false;
-          },
-        err => {
-          this.toastService.open('网络出现错误，请稍后。。。');
-          console.error(err);
-        }
+          }
       )
     );
   }
@@ -86,15 +81,15 @@ export class AuthService {
   set account(value:Account) {
     this._account = Object.assign(this._account ? this._account : new Account(), value);
     this.settingService.setSession(this.key, this._account);
-    if (this._account.remember_me) this.settingService.setLocal(this.key, this._account);
+    if (this.remember_me) this.settingService.setLocal(this.key, this._account);
   }
 
   removeLocal() {
-    this.settingService.removeLocal(this._key);
+    this.settingService.removeLocal(this.key);
   }
 
   removeSession() {
-    this.settingService.removeSession(this._key);
+    this.settingService.removeSession(this.key);
   }
 
   // test
@@ -126,5 +121,4 @@ export class Account implements AdminsLoginDto{
   permissions: string;
   nickname: string;
   avatar: string;
-  remember_me = false;
 }

@@ -19,50 +19,40 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
+const modules = [
+  CommonModule,
+  MatButtonModule,
+  MatToolbarModule,
+  MatIconModule,
+  MatSidenavModule,
+  MatBadgeModule,
+  MatListModule,
+  MatGridListModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatRadioModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatChipsModule,
+  MatTooltipModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSnackBarModule,
+  MatCheckboxModule,
+  MatCardModule,
+  MatProgressSpinnerModule,
+];
 
 @NgModule({
   imports: [
-    CommonModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatBadgeModule,
-    MatListModule,
-    MatGridListModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatChipsModule,
-    MatTooltipModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSnackBarModule,
+    modules
   ],
   exports: [
-    MatButtonModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatBadgeModule,
-    MatListModule,
-    MatGridListModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatDatepickerModule,
-    MatChipsModule,
-    MatTooltipModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatCardModule,
-    MatProgressSpinnerModule,
+    modules
   ],
   providers: [
     MatDatepickerModule,

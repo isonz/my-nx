@@ -11,7 +11,8 @@ export class LoginComponent implements AfterViewInit{
   hide = true;
   isLoading = false;
   account = '';
-  password = ''
+  password = '';
+  remember_me = false;
 
   constructor(
     public authService: AuthService,
@@ -29,6 +30,7 @@ export class LoginComponent implements AfterViewInit{
 
 
   login() {
+    this.authService.remember_me = this.remember_me;
     this.authService.login(this.account, this.password).subscribe(
       () => {
         if (this.authService.isLoggedIn) {

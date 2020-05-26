@@ -1,13 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { AdminsService } from '../../admins/services/admins.service';
 import { sha256 } from 'js-sha256';
 import * as jwt from 'jsonwebtoken';
-import { AdminsDto, AdminsLoginDto } from '@my-nx/api-interfaces';
+import { AdminsDto } from '@my-nx/api-interfaces';
 import { Admins } from '../../../data/entities/Admins';
 import { environment } from '../../../environments/environment';
-import { ApiException } from '../../../common/exception/http.exception';
-import { ApiErrorCode } from '../../../common/enums/api-error-code.enum';
 import { JwtPayload } from '../jwt-payload.interface';
+import { HttpEnum } from '../../../common/enums/http.enum';
 
 
 
@@ -15,14 +14,14 @@ import { JwtPayload } from '../jwt-payload.interface';
 export class AuthService {
 
   admin: Admins;
-  expires = 1800;
+  expires = '1d';
 
   constructor(
     private readonly adminsService: AdminsService,
   ) {}
 
   async createToken(id: number): Promise<any> {
-    const user: JwtPayload = { id: id }
+    const user: JwtPayload = { id: id };
     return jwt.sign(user, environment.jwtSecret, { expiresIn: this.expires });
   }
 
@@ -37,15 +36,15 @@ export class AuthService {
         return new Promise((x, y) => {
           this.createToken(this.admin.id)
             .then(z => x({ account: this.admin.account, token: z, permissions: 'Admin' }), err => {
-                throw new ApiException('未知错误'+err.toString(), 1000000 );
+                throw new HttpException(HttpEnum.UNKNOWN, HttpStatus.UNAUTHORIZED);
             })
             .catch(z => y(z))
         })
       } else {
-        throw new ApiException('密码错误', ApiErrorCode.USER_ACCOUNT_PASSWORD_INVALID );
+        throw new HttpException(HttpEnum.USER_PASSWORD_INVALID, HttpStatus.UNAUTHORIZED);
       }
     } else {
-      throw new ApiException('账号不存在', ApiErrorCode.USER_ACCOUNT_PASSWORD_INVALID );
+      throw new HttpException(HttpEnum.USER_ACCOUNT_INVALID, HttpStatus.UNAUTHORIZED);
     }
   }
 

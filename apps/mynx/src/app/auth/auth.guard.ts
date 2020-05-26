@@ -8,6 +8,7 @@ import {
   CanLoad, Route
 }                           from '@angular/router';
 import { AuthService }      from './auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -24,13 +25,13 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   }
 
   canLoad(route: Route): boolean {
-    const url = `/${route.path}`;
-
+    // const url = `/${route.path}`;
+    const url = location.pathname;
     return this.checkLogin(url);
   }
 
   checkLogin(url: string): boolean {
-    // console.log(url);
+    // console.log(this.authService.isLoggedIn, this.authService.account.token);
     if (this.authService.isLoggedIn || this.authService.account.token) {
       return true;
     }

@@ -1,6 +1,5 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { ApiErrorCode } from '../enums/api-error-code.enum';
 
 
 @Catch(HttpException)
@@ -25,20 +24,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
 export class ApiException extends HttpException {
 
   errorMessage: string;
-  errorCode: ApiErrorCode;
+  errorCode: number;
 
-  constructor(errorMessage: string, errorCode: ApiErrorCode) {
+  constructor(errorMessage: string, errorCode: number) {
     super(errorMessage, HttpStatus.BAD_REQUEST);
     this.errorMessage = errorMessage;
     this.errorCode = errorCode;
-  }
-
-  getErrorCode(): ApiErrorCode {
-    return this.errorCode;
-  }
-
-  getErrorMessage(): string {
-    return this.errorMessage;
   }
 
 }
