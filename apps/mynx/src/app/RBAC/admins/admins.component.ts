@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminsService } from './admins.service';
 import { map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class AdminsComponent implements OnInit {
   }
 
   isLoading = false;
-  adminsList = null;
+  entityLists = null;
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -25,8 +26,10 @@ export class AdminsComponent implements OnInit {
   }
 
   findAll(){
-    this.adminsList = this.adminsService.findAll({ index: 1, size: 0 }).pipe(map(x => x.list));
-    console.log( this.adminsList );
+    this.adminsService.findAll({ index: 1, size: 30 }).pipe(map(x => x.list)).subscribe((x) => {
+      this.entityLists = x;
+      console.log(this.entityLists);
+    });
   }
 
 }
