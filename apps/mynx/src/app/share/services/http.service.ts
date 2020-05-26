@@ -122,7 +122,15 @@ export class HttpService {
     if(401 === error.error.statusCode){
       this.logout();
     }else if (error.error) {
-      this.toastService.open(`${error.error.message}`, `${error.error.statusCode}`);
+      console.error(error);
+      if('undefined' === typeof error.error.statusCode){
+        this.toastService.open(`${error.statusText}`, `${error.status}`);
+        if('undefined' === typeof error.status){
+          this.toastService.open(`${error.error}`, '10000');
+        }
+      }else{
+        this.toastService.open(`${error.error.message}`, `${error.error.statusCode}`);
+      }
       return throwError(error.error);
     }
 

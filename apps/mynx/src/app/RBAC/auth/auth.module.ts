@@ -4,8 +4,7 @@ import { FormsModule }    from '@angular/forms';
 
 import { LoginComponent }    from './login/login.component';
 import { AuthRoutingModule } from './auth-routing.module';
-import { AngularMaterialModule } from '../angular-material.module';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { AngularMaterialModule } from '../../angular-material.module';
 
 @NgModule({
   imports: [

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as _ from "lodash";
 import { HttpService } from './http.service';
+import { environment } from '../../../environments/environment';
 
 export interface Id {
   id: string | number;
@@ -37,29 +37,31 @@ export class RepositoryService {
     public option: RepositoryOption
   ) { }
 
+  api_url = environment.api_url;
+
   findAll(query?: Query) {
-    let param: Query = { index: 1, size: 10 };
+    let param: Query = { index: 1, size: 50 };
     if (query) {
       param = Object.assign(param, query)
     }
-    return this.http.get(`${this.option.controller.name}/${param.size}/${param.index}`, query.filter);
+    return this.http.get(`${this.api_url + this.option.controller.name}/${param.size}/${param.index}`, query.filter);
   }
 
   findOne(id) {
-    return this.http.get(`${this.option.controller.name}/${id}`);
+    return this.http.get(`${this.api_url + this.option.controller.name}/${id}`);
   }
 
   create(entity) {
     // if (_.has(entity, 'id')) { entity = _.omit(entity, ['id']) }
-    return this.http.post(`${this.option.controller.name}`, entity);
+    return this.http.post(`${this.api_url + this.option.controller.name}`, entity);
   }
 
   update(entity) {
-    return this.http.put(`${this.option.controller.name}`, entity);
+    return this.http.put(`${this.api_url + this.option.controller.name}`, entity);
   }
 
   remove(id) {
-    return this.http.delete(`${this.option.controller.name}/${id}`);
+    return this.http.delete(`${this.api_url + this.option.controller.name}/${id}`);
   }
 
 }

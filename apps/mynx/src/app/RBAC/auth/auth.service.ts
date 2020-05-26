@@ -3,10 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable, of, range } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AdminsLoginDto } from '@my-nx/api-interfaces';
-import { HttpService } from '../share/services/http.service';
-import { ToastService } from '../share/services/toast.service';
-import { SettingService } from '../share/services/setting.service';
-import { environment } from '../../environments/environment';
+import { HttpService } from '../../share/services/http.service';
+import { SettingService } from '../../share/services/setting.service';
+import { environment } from '../../../environments/environment';
 
 
 @Injectable({
@@ -16,7 +15,6 @@ export class AuthService {
 
   constructor(
     private http: HttpService,
-    public toastService: ToastService,
     public settingService: SettingService
   ) {
     if (this.account.id && this.account.token) {

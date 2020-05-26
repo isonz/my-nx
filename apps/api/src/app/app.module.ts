@@ -3,9 +3,9 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './RBAC/auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AdminsModule } from './admins/admins.module';
+import { AdminsModule } from './RBAC/admins/admins.module';
 import { environment } from '../environments/environment';
 import { getMetadataArgsStorage } from 'typeorm';
 

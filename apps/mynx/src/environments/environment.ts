@@ -4,6 +4,7 @@
 
 export const environment = {
   session_key: 'Auth',
+  api_url: '/api/',
   production: false
 };
 

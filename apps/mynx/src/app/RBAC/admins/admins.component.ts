@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminsService } from './admins.service';
-import { NavigationExtras } from '@angular/router';
+import { map } from 'rxjs/operators';
+
 
 @Component({
   selector: 'my-nx-users',
@@ -20,22 +21,12 @@ export class AdminsComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.getAdminList();
+    this.findAll();
   }
 
-  getAdminList(){
-    this.adminsService.getList().subscribe(
-      () => {
-        this.adminsList = this.adminsService.adminList;
-      },
-      err => {
-        this.isLoading = false;
-        console.error(err);
-      },
-      () =>{
-        this.isLoading = false;
-      }
-    );
+  findAll(){
+    this.adminsList = this.adminsService.findAll({ index: 1, size: 0 }).pipe(map(x => x.list));
+    console.log( this.adminsList );
   }
 
 }
