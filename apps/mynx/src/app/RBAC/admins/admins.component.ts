@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminsService } from './admins.service';
 import { map } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { AdminsDto, QueryResultList } from '@my-nx/api-interfaces';
 
 
 @Component({
@@ -18,7 +18,7 @@ export class AdminsComponent implements OnInit {
   }
 
   isLoading = false;
-  entityLists = null;
+  entityResult: QueryResultList<AdminsDto>;
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -26,9 +26,10 @@ export class AdminsComponent implements OnInit {
   }
 
   findAll(){
-    this.adminsService.findAll({ index: 1, size: 30 }).pipe(map(x => x.list)).subscribe((x) => {
-      this.entityLists = x;
-      console.log(this.entityLists);
+    // this.adminsService.findAll({ index: 1, size: 30 }).pipe(map(x => x.list)).subscribe((x) => {
+    this.adminsService.findAll({ index: 1, size: 30 }).subscribe((x) => {
+      this.entityResult = x;
+      // console.log(this.entityResult);
     });
   }
 

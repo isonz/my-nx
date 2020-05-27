@@ -1,4 +1,4 @@
-<p>admins works !</p>
-<!--<div *ngFor="let admin of adminsList" class="form-row">-->
-<!--  <b>{{admin.account}}</b> <span>{{admin.nickname}}</span> <span>{{admin.token}}</span>-->
-<!--</div>-->
+<div *ngFor="let entity of entityResult?.list" class="form-row">
+  <b>ID：{{entity.id}}</b>， <b>账号：{{entity.account}}</b>， <span>昵称：{{entity.nickname}}</span>， <span>头像：{{entity.avatar}}</span>
+  <p>记录总数: {{entityResult.count}}， 当前页码: {{entityResult.query.index}}， 每页数: {{entityResult.query.size}}</p>
+</div>

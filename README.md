@@ -80,6 +80,10 @@ npm install --save @nestjs/typeorm typeorm mysql
 
 
 npm install --save js-sha256
+npm install --save @hapi/joi
+npm install --save class-validator class-transformer
+npm install --save chalk
+
 
 ```
 

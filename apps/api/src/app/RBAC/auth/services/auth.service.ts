@@ -1,12 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { AdminsService } from '../../admins/services/admins.service';
-import { sha256 } from 'js-sha256';
 import * as jwt from 'jsonwebtoken';
 import { AdminsDto } from '@my-nx/api-interfaces';
 import { Admins } from '../../../../data/entities/Admins';
 import { environment } from '../../../../environments/environment';
 import { JwtPayload } from '../jwt-payload.interface';
 import { HttpEnum } from '../../../../common/enums/http.enum';
+import { sha256 } from '../../../../common/utils/crypto';
 
 
 

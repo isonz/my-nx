@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Repository, ObjectID, getManager } from "typeorm";
 import { ResultList } from "../interfaces/result.interface";
+import { idDeUUID, idToUUID } from '../utils/crypto';
 
 export interface Id {
   id: string | number | Date | ObjectID;
@@ -23,11 +24,25 @@ export class RepositoryService<T extends Id> {
           size: size
         }
       };
+
+      //加密ID
+      const list = result.list;
+      for (const k in list){
+        if('undefined' !== typeof list[k].id){
+          list[k].id = idToUUID(list[k].id);
+        }else{
+          break;
+        }
+      }
+      // result.list = list;
+      // console.log(idDeUUID('03ff8435-90b1-6c35-07c2-1622960d3fbe'));
+
       x(result);
     })
   }
 
   async findOne(id: string | number | Date | ObjectID): Promise<T> {
+    if('number' !== typeof id) id = idDeUUID(id);
     return await this.repository.findOne(id);
   }
 
@@ -36,7 +51,8 @@ export class RepositoryService<T extends Id> {
   }
 
   async update(entity: T): Promise<any> {
-    const index = await this.repository.findOne(entity.id);
+    let index = await this.repository.findOne(entity.id);
+    if('number' !== typeof index) index = idDeUUID(index);
     if (index) {
       Object.assign(index, entity);
       await getManager().transaction(async transactionalEntityManager => {
@@ -48,6 +64,7 @@ export class RepositoryService<T extends Id> {
   }
 
   async remove(id: string | number | Date | ObjectID): Promise<any> {
+    if('number' !== typeof id) id = idDeUUID(id);
     const entity = await this.repository.findOne(id);
     return await this.repository.remove(entity);
   }
