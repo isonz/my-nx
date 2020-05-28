@@ -1,9 +1,0 @@
-{"date":"2020-05-27T18:34:38.148","level":"ERROR","category":"default","host":"isonmac.local","pid":"16892","data":'all.exception.ts(line: 20, column: 12): 
-  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    Request original url: /api/admins/30/1
-    Method: GET
-    IP: ::ffff:127.0.0.1
-    Status code: 401
-    Response: Error: {"statusCode":401,"error":"Unauthorized"} 
-  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    '}
