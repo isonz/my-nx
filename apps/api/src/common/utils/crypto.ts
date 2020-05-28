@@ -11,11 +11,15 @@ export function md5(str: string) {
 }
 
 
+export function testUUID(uuid) {
+  return /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8}-(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{4}-(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{4}-(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{4}-(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{12}$/.test(uuid);
+}
+
 export function idToUUID(data) {
   return toUUID(data, environment.idSecret);
 }
 
-export function idDeUUID(uuid) {
+export function uuidToId(uuid) {
   return deUUID(uuid, environment.idSecret);
 }
 

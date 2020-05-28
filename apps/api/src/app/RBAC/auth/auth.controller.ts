@@ -10,8 +10,17 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() params): Promise<any> {
-    // console.log(params);
-    return this.authService.login(params.account, params.password);
+    const account = params.account;
+    const password = params.password;
+    if(!account || !password) return null;
+    return this.authService.login(account, password);
+  }
+
+  @Post('re-token')
+  async reToken(@Body() params): Promise<any> {
+    const tokenRef = params.tokenRef;
+    if(!tokenRef) return null;
+    return await this.authService.reToken(tokenRef);
   }
 
 }

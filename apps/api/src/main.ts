@@ -20,8 +20,8 @@ async function bootstrap() {
   app.use(express.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
   app.use(logger);    // 监听所有的请求路由，并打印日志
   app.useGlobalInterceptors(new TransformInterceptor());  // 使用拦截器打印出参
-  app.useGlobalFilters(new AllExceptionsFilter());        // 过滤处理所有未知异常
-  app.useGlobalFilters(new HttpExceptionFilter());        // 过滤处理 HTTP 异常
+  // app.useGlobalFilters(new AllExceptionsFilter());        // 过滤处理所有未知异常
+  // app.useGlobalFilters(new HttpExceptionFilter());        // 过滤处理 HTTP 异常
 
 
   const globalPrefix = 'api';

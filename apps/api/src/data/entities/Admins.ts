@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @Entity("admins", { schema: "my_nx" })
 export class Admins {
   @PrimaryGeneratedColumn({ type: "int", name: "id", unsigned: true })
-  id: number;
+  id: number | string;
 
   @Column("varchar", { name: "account", comment: "用户名", length: 30 })
   account: string;

@@ -4,7 +4,7 @@ import { Observable, Observer, throwError } from 'rxjs';
 import { SettingService } from './setting.service';
 import { ToastService } from './toast.service';
 import { environment } from '../../../environments/environment';
-import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
 
 
 /**
@@ -20,7 +20,6 @@ export class HttpService {
     public http: HttpClient,
     public setting: SettingService,
     public toastService: ToastService,
-    private router: Router
   ) {
   }
 
@@ -102,8 +101,10 @@ export class HttpService {
           },
           error => {
             observer.error(error);
-            this.handleError(error);
-            observer.complete();
+            const handle = this.handleError(error);
+            if(handle){
+              observer.complete();
+            }
           }
         )
     })
@@ -117,12 +118,16 @@ export class HttpService {
    * @returns
    * @memberof HttpService
    */
-  handleError(error: HttpErrorResponse) {
+  async handleError(error: HttpErrorResponse) {
     // console.log(error.error);
     if(401 === error.error.statusCode){
-      this.logout();
+      return this.refreshToken().subscribe(x => {
+        if(!x){
+          this.logout();
+        }
+        return true;
+      });
     }else if (error.error) {
-      console.error(error);
       if('undefined' === typeof error.error.statusCode){
         this.toastService.open(`${error.statusText}`, `${error.status}`);
         if('undefined' === typeof error.status){
@@ -134,6 +139,29 @@ export class HttpService {
       return throwError(error.error);
     }
 
+  }
+
+  /**
+   * Token到期后自动刷新
+   */
+  refreshToken(): Observable<any>{
+    const session = this.setting.getSession(this.session_key);
+    const local = this.setting.getLocal(this.session_key);
+    const auth = session ? session : local;
+    if('undefined' === typeof auth.tokenRef) return null;
+    const tokenRef = auth.tokenRef;
+    return this.http.post<any>('/api/auth/re-token', {tokenRef}).pipe(
+      tap(
+        val => {
+          if(val){
+            this.setting.setSession(this.session_key, val);
+            if (local) this.setting.setLocal(this.session_key, val);
+            return true;
+          }
+          return false;
+        }
+      )
+    );
   }
 
   logout(){
@@ -158,4 +186,6 @@ export class HttpService {
       };
     }
   }
+
+
 }
