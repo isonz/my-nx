@@ -63,7 +63,7 @@ export class AuthService {
   async reToken(tokenRef: string): Promise<any> {
       const that = this;
       return jwt.verify(tokenRef, environment.jwtRefSecret, async function(err, data) {
-        if (err) return null;
+        if (err) return 'ss';
         // console.log(data);
         if('undefined' === typeof data.id) return null;
 

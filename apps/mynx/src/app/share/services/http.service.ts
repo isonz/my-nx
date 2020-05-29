@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, Observer, throwError } from 'rxjs';
+import { interval, Observable, Observer, of, pipe, throwError } from 'rxjs';
 import { SettingService } from './setting.service';
 import { ToastService } from './toast.service';
 import { environment } from '../../../environments/environment';
-import { tap } from 'rxjs/operators';
+import { flatMap, retryWhen, tap } from 'rxjs/operators';
 
 
 /**
@@ -16,6 +16,11 @@ import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {
+
+  private _refresh_data = 0;
+  private _header_option = {};
+  private _retry_count = 0;
+
   constructor(
     public http: HttpClient,
     public setting: SettingService,
@@ -84,16 +89,16 @@ export class HttpService {
    * @memberof HttpService
    */
   request(method: string, url: string, params?): Observable<any> {
-    let option = {};
     method = method.toUpperCase();
     if (['POST', 'PUT', 'DELETE'].indexOf(method) > -1) {
-      option = { body: params };
+      this._header_option = { body: params };
     } else if (['GET'].indexOf(method) > -1) {
-      option = { params: params };
+      this._header_option = { params: params };
     }
-    this.addHeader(option);
+    this.addHeader();
     return new Observable((observer: Observer<any>) => {
-      this.http.request(method, url, option)
+      this.http.request(method, url, this._header_option)
+        .pipe(this.http_retry())
         .subscribe(
           (data: any) => {
             observer.next(data);
@@ -101,10 +106,8 @@ export class HttpService {
           },
           error => {
             observer.error(error);
-            const handle = this.handleError(error);
-            if(handle){
-              observer.complete();
-            }
+            this.handleError(error);
+            observer.complete();
           }
         )
     })
@@ -118,15 +121,10 @@ export class HttpService {
    * @returns
    * @memberof HttpService
    */
-  async handleError(error: HttpErrorResponse) {
+  handleError(error: HttpErrorResponse) {
     // console.log(error.error);
     if(401 === error.error.statusCode){
-      return this.refreshToken().subscribe(x => {
-        if(!x){
-          this.logout();
-        }
-        return true;
-      });
+      this.logout();
     }else if (error.error) {
       if('undefined' === typeof error.error.statusCode){
         this.toastService.open(`${error.statusText}`, `${error.status}`);
@@ -156,12 +154,43 @@ export class HttpService {
           if(val){
             this.setting.setSession(this.session_key, val);
             if (local) this.setting.setLocal(this.session_key, val);
+            this._refresh_data = 1;
+            this.addHeader();
             return true;
           }
           return false;
         }
       )
     );
+  }
+
+  /**
+   * 重试请求
+   * @param maxRetry
+   * @param delayMs
+   */
+  http_retry(maxRetry: number = 3, delayMs: number = 2000) {
+    const that = this;
+    return (src: Observable<any>) => src.pipe(
+      retryWhen(_ => {
+        return interval(delayMs).pipe(
+          tap(x => {
+            that._retry_count ++ ;
+            if(that._retry_count > maxRetry){
+              this.toastService.open('请求超时', '10000');
+            }
+            if(!that._refresh_data){
+              that.refreshToken().subscribe(
+                ()=> {
+                  console.log(x);
+                }
+              );
+            }
+          }),
+          flatMap(count => count >= maxRetry ? throwError("请求次数超限") : of(count))
+        )
+      })
+    )
   }
 
   logout(){
@@ -177,10 +206,11 @@ export class HttpService {
    * @param {*} option
    * @memberof HttpService
    */
-  private addHeader(option) {
+  private addHeader() {
     const auth = this.setting.getSession('Auth');
+    console.log(auth['token']);
     if (auth && auth['token']) {
-      option["headers"] = {
+      this._header_option["headers"] = {
         'Content-Type':  'application/json',
         'Authorization': `Bearer ${auth['token']}`
       };
